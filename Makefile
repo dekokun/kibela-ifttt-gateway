@@ -13,7 +13,7 @@ deploy: $(OUTPUT_TEMPLATE)
 		--stack-name kibela-cloudformation \
 		--capabilities CAPABILITY_IAM
 
-$(BUILD): main.go Makefile $(VERSIONFILE)
+$(BUILD): main.go Makefile $(VERSIONFILE) config.toml
 	GOARCH=amd64 GOOS=linux go build -o $(BUILD)
 
 $(OUTPUT_TEMPLATE): $(INPUT_TEMPATE) $(BUILD)
@@ -41,3 +41,8 @@ $(VERSIONFILE): main.go $(GOBUMP)
 .PHONY: test
 test:
 	go test
+
+config.toml:
+	cp config.toml.sample config.toml
+	@echo "\033[92mplease edit config.toml \033[0m"
+	@exit 1
