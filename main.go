@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
+	"log"
 
 	"github.com/BurntSushi/toml"
 	"github.com/aws/aws-lambda-go/events"
@@ -12,13 +14,8 @@ import (
 var (
 	// ErrNameNotProvided is thrown when a name is not provided
 	ErrNameNotProvided = errors.New("no data was provided in the HTTP body")
+	makeIftttClient    = ifttt.NewIftttClient
 )
-
-type config struct {
-	IftttKey string
-}
-
-var configToml config
 
 func handleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	// If no data is provided in the HTTP request body, throw an error
@@ -30,7 +27,19 @@ func handleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProx
 }
 
 func handleRequestBody(body string) (string, error) {
-	iftttClient := ifttt.NewIftttClient(configToml.IftttKey)
+	var data struct {
+		action        string      `json:"action"`
+		action_user   interface{} `json:"action_user"`
+		blog          interface{} `json:"blog"`
+		resource_type string      `json:"resource_type"`
+		team          interface{} `json:"team"`
+	}
+	bodyByte := []byte(body)
+	if err := json.Unmarshal(bodyByte, &data); err != nil {
+		log.Print("JSON Unmarshal error:", err)
+		return "JSON decode error", err
+	}
+	iftttClient := makeIftttClient(loadConfig().IftttKey)
 	values := []string{"firstValue", "secondValue"}
 	iftttClient.Trigger("hogefuga", values)
 
@@ -51,10 +60,18 @@ func makeResponse(body string, err error) events.APIGatewayProxyResponse {
 }
 
 func main() {
+	lambda.Start(handleRequest)
+}
 
+type config struct {
+	IftttKey string
+}
+
+func loadConfig() config {
+	var configToml config
 	_, err := toml.DecodeFile("config.toml", &configToml)
 	if err != nil {
 		panic(err)
 	}
-	lambda.Start(handleRequest)
+	return configToml
 }
