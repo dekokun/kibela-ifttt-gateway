@@ -14,11 +14,11 @@ var (
 	ErrNameNotProvided = errors.New("no data was provided in the HTTP body")
 )
 
-type Config struct {
+type config struct {
 	IftttKey string
 }
 
-var config Config
+var config config
 
 func handleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	// If no data is provided in the HTTP request body, throw an error
