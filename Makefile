@@ -37,3 +37,7 @@ setup-go:
 
 $(VERSIONFILE): main.go $(GOBUMP)
 	./.bin/gobump patch -w -v
+
+.PHONY: test
+test:
+	go test
