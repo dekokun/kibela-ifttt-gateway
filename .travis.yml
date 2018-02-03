@@ -6,10 +6,10 @@ before_install:
 - go get github.com/mattn/goveralls
 - go get github.com/golang/dep/...
 install:
-- $GOPATH/bin/dep ensure
+- "$GOPATH/bin/dep ensure"
 script:
 - go test -v -covermode=count -coverprofile=coverage.out
-- "$HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN"
+- "$HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_REPO_TOKEN"
 env:
   global:
-    secure: "fQS1k98CrqWDz7+wWDlMfcsfuiJ3JdRRbYDXmni+C4SvZJDeqyd6DcHs189ALB9p1tPUFS6sG/gbe3e/rBKkLmNeeb/BkeyF2nOuuy3gz4iyMStqRA8CQBhogEB20oBmTtBkR1+/A5cswYgtNLbGpNmPtvNE7kKxObXubYF42d6C2M7eVhYE6fkRAngem1t8kshJLveHGmWzf10hQthX3d/bA6AVpXBw0ZeoU/Xt9qJPprjT90ZE8SBAMushSBJMda/F+VyF1sCO84dnrPjc+7unIyLxevI5xP2RaXSrURpE/jv5C9nlpyr/58TVYeY88glfF0Io5g1PFk8OJX6MMDrqBfxViM/ihuj4fwKm+72wedXQpxTzutFIwmieDNVABtiTIT0vFNaBjw5tCF/4rh5BUfyaoJq9doB42cuDsaDuuyyUXj5kHUtchZuNSOZ7FzeDdsH9ssSlUK41HzNoCuAkFqIMTqh3/x2k29QwEOLNBTcdcGZ3AAFqFBksze+kepfKwlqthPqXyNIilGHxRvl6E/FE0qF8v5FvS8OJUn+reu2xA4T6sKYDFwmEM3yFDuZgQFoSTCbAEz9k+WnRAuBX2vKjPKT+JBp493TRMfLsljActb+xnRYoBTnNMJ+kJzrOoCyjpbcpIbXFNT5PXHF4fY916APoQszfTNBFYzY="
+    secure: T1YoL02NnPMc2EvwGqxGCbyjvbQRDz26Sgj5FET+GF3uPe6gt5qfC5sV2CLD+KISSTGX5jTZvIR/IXTXQo91bkT2X/s8NZdQ3McjqLNchQ49v2vccjxI5KWMZCjPakLsaaRip76PcP1Z34azUvfbfjr5dIcIF5Ytqt+hDkJSOLh4Kkc/9GDo/9sJOWcVNpo6QVRORj6FEoWdwSoQF/43/T3eqOY6+41g+KyvTZ6ckJxjemApAhDitMkDjuQ4XqSBvg2QEL9ukSEbrKMARhiyb49vvWTFg/qYllynH2jo74Ck3DOM0bKNYE8xYH9XNwSTF8ucxuCLjdk1xS8S/34EuRmjDoRiYGw54wPGHQj4Vd6dEZvX/t91RKYkfuA7zBklhqQ1vdJumfKDbtlY9SPh7juOdgtu9HDd+fMaTHcg4n5yYg2zx7EunMP2rnNWa2cXf/DOnZdW5DFn93c4pDRdbQc//mHYuAUpzpGjwEFJJShjGH7dd9Mdo9jiMFudoLxhkHumyglkjC8OqV+DmzMnpt944iHvAQUpo7AdnqDDDSaKhyn2fOsk5nGFgQemENgJ8e3ASopKEfJVsavHnYwp1KANf1E27ug67HbKwUfTAZHeZzWc7slpnQySOaXAcnlz3xbSU6+SlwCoLirhBEF4QtX0sLYGMICuQZDmYEpoRF0=
