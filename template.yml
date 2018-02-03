@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  KibelaIFTTTLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda-go # file name
+      Runtime: go1.x
+      CodeUri: build
+      Timeout: 100
+      Events:
+        KibelaWebHook:
+          Type: Api
+          Properties:
+            Path: /payload
+            Method: post
