@@ -40,7 +40,7 @@ func handleRequestBody(body string) (string, error) {
 		return "JSON decode error", err
 	}
 	iftttClient := makeIftttClient(loadConfig().IftttKey)
-	values := []string{"firstValue", "secondValue"}
+	values := []string{"a", "a"}
 	iftttClient.Trigger("hogefuga", values)
 
 	responceBody := "Hello, " + body

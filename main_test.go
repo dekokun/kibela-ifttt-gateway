@@ -1,6 +1,11 @@
 package main
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/golang/mock/gomock"
+	"github.com/lorenzobenvenuti/ifttt"
+)
 
 func TestHandleBody(t *testing.T) {
 	reqBody := `
@@ -45,12 +50,21 @@ func TestHandleBody(t *testing.T) {
 }
 	`
 
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	// convert ifttt client to mock
+	makeIftttClient = func(key string) ifttt.IftttClient {
+		mockIftttClient := NewMockIftttClient(ctrl)
+		mockIftttClient.EXPECT().Trigger("hogefuga", []string{"a", "a"}).Return(nil)
+		return mockIftttClient
+	}
+
 	actual, err := handleRequestBody(reqBody)
 	if err != nil {
 		t.Errorf("got err %v\n", err)
 	}
 
-	expected := ""
+	expected := "https://cdn.kibe.la/media/public/1/kibe.png"
 	if actual != expected {
 		t.Errorf("got %v\nwant %v", actual, expected)
 	}

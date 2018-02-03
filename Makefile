@@ -1,10 +1,13 @@
 BUILD := build/lambda-go
 OUTPUT_TEMPLATE := output.yml
 INPUT_TEMPATE := template.yml
-VERSIONFILE := version.go
+VERSIONFILE := ./version.go
+MAINFILE := ./main.go
+MOCK_IFTTT := mock_ifttt_test.go
 
 DEP := .bin/dep
 GOBUMP := .bin/gobump
+MOCKGEN := .bin/mockgen
 
 .PHONY: deploy
 deploy: $(OUTPUT_TEMPLATE)
@@ -13,7 +16,7 @@ deploy: $(OUTPUT_TEMPLATE)
 		--stack-name kibela-cloudformation \
 		--capabilities CAPABILITY_IAM
 
-$(BUILD): main.go Makefile $(VERSIONFILE) config.toml
+$(BUILD): $(MAINFILE) Makefile $(VERSIONFILE) config.toml
 	GOARCH=amd64 GOOS=linux go build -o $(BUILD)
 
 $(OUTPUT_TEMPLATE): $(INPUT_TEMPATE) $(BUILD)
@@ -35,14 +38,17 @@ setup-go:
 	@$(MAKE) setup-go
 	@touch $@
 
-$(VERSIONFILE): main.go $(GOBUMP)
+$(VERSIONFILE): $(MAINFILE) $(GOBUMP)
 	./.bin/gobump patch -w -v
 
 .PHONY: test
-test:
+test: $(MOCK_IFTTT)
 	go test
 
 config.toml:
 	cp config.toml.sample config.toml
 	@echo "\033[92mplease edit config.toml \033[0m"
 	@exit 1
+
+$(MOCK_IFTTT): $(MOCKGEN) vendor/github.com/lorenzobenvenuti/ifttt/ifttt.go
+	$(MOCKGEN) -package main -source vendor/github.com/lorenzobenvenuti/ifttt/ifttt.go > $(MOCK_IFTTT)
