@@ -18,7 +18,7 @@ type config struct {
 	IftttKey string
 }
 
-var config config
+var configToml config
 
 func handleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	// If no data is provided in the HTTP request body, throw an error
@@ -30,7 +30,7 @@ func handleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProx
 }
 
 func handleRequestBody(body string) (string, error) {
-	iftttClient := ifttt.NewIftttClient(config.IftttKey)
+	iftttClient := ifttt.NewIftttClient(configToml.IftttKey)
 	values := []string{"firstValue", "secondValue"}
 	iftttClient.Trigger("hogefuga", values)
 
@@ -52,7 +52,7 @@ func makeResponse(body string, err error) events.APIGatewayProxyResponse {
 
 func main() {
 
-	_, err := toml.DecodeFile("config.toml", &config)
+	_, err := toml.DecodeFile("config.toml", &configToml)
 	if err != nil {
 		panic(err)
 	}
