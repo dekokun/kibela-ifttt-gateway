@@ -41,6 +41,10 @@ setup-go:
 $(VERSIONFILE): $(MAINFILE) $(GOBUMP)
 	./.bin/gobump patch -w -v
 
+.PHONY: install
+install: $(DEP) -v -covermode=count -coverprofile=coverage.out
+	$(DEP) ensure
+
 .PHONY: test
 test: $(MOCK_IFTTT)
 	go test
