@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 
 	"github.com/BurntSushi/toml"
@@ -47,19 +48,34 @@ func handleRequestBody(body string) (string, error) {
 		return "JSON decode error", err
 	}
 
-	url, err := dproxy.New(data).M("blog").M("url").String()
+	avatarUrl, err := dproxy.New(data).M("blog").M("author").M("avatar_photo").M("url").String()
 
 	if err != nil {
 		log.Print("json responce is unexpected:", err)
 		return "json responce is unexpected", err
 	}
 
-	iftttClient := makeIftttClient(loadConfig().IftttKey)
-	values := []string{"a", "a"}
-	iftttClient.Trigger("hogefuga", values)
+	blogUrl, err := dproxy.New(data).M("blog").M("url").String()
 
-	// responceBody := data.blog.url
-	responceBody := url
+	if err != nil {
+		log.Print("json responce is unexpected:", err)
+		return "json responce is unexpected", err
+	}
+
+	title, err := dproxy.New(data).M("blog").M("title").String()
+	if err != nil {
+		log.Print("json responce is unexpected:", err)
+		return "json responce is unexpected", err
+	}
+
+	iftttClient := makeIftttClient(loadConfig().IftttKey)
+	lineTitle := "kibelaに投稿されました！"
+	lineBody := fmt.Sprintf("%s: %s", title, blogUrl)
+	linePhotoUrl := avatarUrl
+	values := []string{lineTitle, lineBody, linePhotoUrl}
+	iftttClient.Trigger(loadConfig().IftttKey, values)
+
+	responceBody := fmt.Sprintf("%s", blogUrl)
 	return responceBody, nil
 }
 
