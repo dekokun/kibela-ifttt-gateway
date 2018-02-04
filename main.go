@@ -77,7 +77,7 @@ func handleRequestBody(body string) (string, error) {
 	err = iftttClient.Trigger(loadConfig().IftttKey, values)
 	if err != nil {
 		log.Print("ifttt request failed:", err)
-		return "ifttt request failed:", err
+		return "ifttt request failed", err
 	}
 
 	responceBody := fmt.Sprintf("%s", blogUrl)
