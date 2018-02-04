@@ -47,7 +47,7 @@ install: $(DEP)
 	$(DEP) ensure
 
 .PHONY: test
-test: $(MOCK_IFTTT)
+test: $(MOCK_IFTTT) config.toml
 	go test -v -covermode=count -coverprofile=coverage.out
 
 config.toml:
