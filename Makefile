@@ -44,12 +44,11 @@ $(VERSIONFILE): $(MAINFILE) $(GOBUMP)
 
 .PHONY: install
 install: $(DEP)
-	$(DEP) -v -covermode=count -coverprofile=coverage.out
 	$(DEP) ensure
 
 .PHONY: test
 test: $(MOCK_IFTTT)
-	go test
+	go test -v -covermode=count -coverprofile=coverage.out
 
 config.toml:
 	cp config.toml.sample config.toml
