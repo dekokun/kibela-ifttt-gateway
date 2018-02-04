@@ -18,6 +18,7 @@ deploy: $(OUTPUT_TEMPLATE)
 
 $(BUILD): $(MAINFILE) Makefile $(VERSIONFILE) config.toml
 	GOARCH=amd64 GOOS=linux go build -o $(BUILD)
+	cp config.toml build/config.toml
 
 $(OUTPUT_TEMPLATE): $(INPUT_TEMPATE) $(BUILD)
 	aws cloudformation package \
