@@ -51,9 +51,8 @@ test: $(MOCK_IFTTT)
 	go test -v -covermode=count -coverprofile=coverage.out
 
 config.toml:
-	cp config.toml.sample config.toml
+	cp -n config.toml.sample config.toml
 	@echo "\033[92mplease edit config.toml \033[0m"
-	@exit 1
 
 $(MOCK_IFTTT): $(MOCKGEN) vendor/github.com/lorenzobenvenuti/ifttt/ifttt.go
 	$(MOCKGEN) -package main -source vendor/github.com/lorenzobenvenuti/ifttt/ifttt.go > $(MOCK_IFTTT)
