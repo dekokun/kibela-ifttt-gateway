@@ -41,6 +41,7 @@ func handleRequestBody(body string) (string, error) {
 	// 	resource_type string      `json:"resource_type"`
 	// 	team          interface{} `json:"team"`
 	// }
+	log.Println(body)
 	var data interface{}
 	bodyByte := []byte(body)
 	if err := json.Unmarshal(bodyByte, &data); err != nil {
@@ -73,7 +74,11 @@ func handleRequestBody(body string) (string, error) {
 	lineBody := fmt.Sprintf("%s: %s", title, blogUrl)
 	linePhotoUrl := avatarUrl
 	values := []string{lineTitle, lineBody, linePhotoUrl}
-	iftttClient.Trigger(loadConfig().IftttKey, values)
+	err = iftttClient.Trigger(loadConfig().IftttKey, values)
+	if err != nil {
+		log.Print("ifttt request failed:", err)
+		return "ifttt request failed:", err
+	}
 
 	responceBody := fmt.Sprintf("%s", blogUrl)
 	return responceBody, nil
