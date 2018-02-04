@@ -43,7 +43,8 @@ $(VERSIONFILE): $(MAINFILE) $(GOBUMP)
 	./.bin/gobump patch -w -v
 
 .PHONY: install
-install: $(DEP) -v -covermode=count -coverprofile=coverage.out
+install:
+	$(DEP) -v -covermode=count -coverprofile=coverage.out
 	$(DEP) ensure
 
 .PHONY: test
