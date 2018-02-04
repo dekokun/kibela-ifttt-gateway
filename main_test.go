@@ -55,7 +55,7 @@ func TestHandleBody(t *testing.T) {
 	// convert ifttt client to mock
 	makeIftttClient = func(key string) ifttt.IftttClient {
 		mockIftttClient := NewMockIftttClient(ctrl)
-		mockIftttClient.EXPECT().Trigger("hogefuga", []string{"a", "a"}).Return(nil)
+		mockIftttClient.EXPECT().Trigger(gomock.Any(), gomock.Any()).Return(nil)
 		return mockIftttClient
 	}
 
