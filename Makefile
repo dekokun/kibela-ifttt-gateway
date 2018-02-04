@@ -12,20 +12,20 @@ MOCKGEN := .bin/mockgen
 .PHONY: deploy
 deploy: $(OUTPUT_TEMPLATE)
 	aws cloudformation deploy \
-		--template-file $(OUTPUT_TEMPLATE) \
+		--template-file $< \
 		--stack-name kibela-cloudformation \
 		--capabilities CAPABILITY_IAM
 
 $(BUILD): $(MAINFILE) Makefile $(VERSIONFILE) config.toml
-	GOARCH=amd64 GOOS=linux go build -o $(BUILD)
+	GOARCH=amd64 GOOS=linux go build -o $@
 	cp config.toml build/config.toml
 
 $(OUTPUT_TEMPLATE): $(INPUT_TEMPATE) $(BUILD)
 	aws cloudformation package \
-		--template-file $(INPUT_TEMPATE) \
+		--template-file $< \
 		--s3-bucket dekokun-alexa-example \
 		--s3-prefix lambda-go \
-		--output-template-file $(OUTPUT_TEMPLATE)
+		--output-template-file $@
 
 .PHONY: setup-go
 setup-go:
@@ -55,4 +55,4 @@ config.toml:
 	@echo "\033[92mplease edit config.toml \033[0m"
 
 $(MOCK_IFTTT): $(MOCKGEN) vendor/github.com/lorenzobenvenuti/ifttt/ifttt.go
-	$(MOCKGEN) -package main -source vendor/github.com/lorenzobenvenuti/ifttt/ifttt.go > $(MOCK_IFTTT)
+	$(MOCKGEN) -package main -source vendor/github.com/lorenzobenvenuti/ifttt/ifttt.go > $@
