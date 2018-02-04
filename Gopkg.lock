@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/BurntSushi/toml"
+  packages = ["."]
+  revision = "b26d9c308763d68093482582cea63d69be07a0f0"
+  version = "v0.3.0"
+
+[[projects]]
   name = "github.com/aws/aws-lambda-go"
   packages = [
     "events",
@@ -13,6 +19,18 @@
   version = "v1.0.1"
 
 [[projects]]
+  name = "github.com/golang/mock"
+  packages = ["gomock"]
+  revision = "13f360950a79f5864a972c786a10a50e44b69541"
+  version = "v1.0.0"
+
+[[projects]]
+  name = "github.com/koron/go-dproxy"
+  packages = ["."]
+  revision = "009e1192eaace40a885c5b93c37613b3cae820d6"
+  version = "v1.1"
+
+[[projects]]
   branch = "master"
   name = "github.com/lorenzobenvenuti/ifttt"
   packages = ["."]
@@ -21,6 +39,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "cc650a7b52c89d6a83f4d0a355139a4bccfc06bb7d201f3b87a933aabdf5ca06"
+  inputs-digest = "5e7f48097a033051e3151da34c9be37c9e14f47a070d1929c24be9e89fbc863f"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -64,7 +64,7 @@ func TestHandleBody(t *testing.T) {
 		t.Errorf("got err %v\n", err)
 	}
 
-	expected := "https://cdn.kibe.la/media/public/1/kibe.png"
+	expected := "https://docs.kibe.la/@kibe/1"
 	if actual != expected {
 		t.Errorf("got %v\nwant %v", actual, expected)
 	}
