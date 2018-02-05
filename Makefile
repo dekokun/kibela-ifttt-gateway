@@ -50,7 +50,7 @@ install: $(DEP)
 
 .PHONY: test
 test: $(MOCK_IFTTT) config.toml $(SAMLOCAL)
-	go test -v -covermode=count -coverprofile=coverage.out
+	go test -covermode=count -coverprofile=coverage.out
 
 coverage.html: test
 	go tool cover -html=coverage.out -o $@
