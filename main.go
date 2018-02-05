@@ -70,11 +70,11 @@ func handleRequestBody(body string) (string, error) {
 	}
 
 	iftttClient := makeIftttClient(loadConfig().IftttKey)
-	lineTitle := "kibelaに投稿されました！"
-	lineBody := fmt.Sprintf("%s: %s", title, blogUrl)
-	linePhotoUrl := avatarUrl
-	values := []string{lineTitle, lineBody, linePhotoUrl}
-	err = iftttClient.Trigger(loadConfig().IftttEvent, values)
+	iftttValue1 := "kibelaに投稿されました！"
+	iftttValue2 := fmt.Sprintf("%s: %s", title, blogUrl)
+	iftttValue3 := avatarUrl
+	iftttValues := []string{iftttValue1, iftttValue2, iftttValue3}
+	err = iftttClient.Trigger(loadConfig().IftttEvent, iftttValues)
 	if err != nil {
 		log.Print("ifttt request failed:", err)
 		return "ifttt request failed", err
