@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -67,5 +68,41 @@ func TestHandleBody(t *testing.T) {
 	expected := "https://docs.kibe.la/@kibe/1"
 	if actual != expected {
 		t.Errorf("got %v\nwant %v", actual, expected)
+	}
+}
+
+func TestHandleBodyInvalidJson(t *testing.T) {
+	reqBody := `
+	Hogefuga
+	`
+
+	_, err := handleRequestBody(reqBody)
+	if err == nil {
+		t.Errorf("not got err %v\n", err)
+	}
+}
+
+func TestMakeResponse(t *testing.T) {
+
+	body := "body"
+	actual := makeResponse(body, nil)
+	expected := 200
+	if actual.StatusCode != expected {
+		t.Errorf("got %v\nwant %v", actual.StatusCode, expected)
+	}
+	expectedBody := body
+	if actual.Body != expectedBody {
+		t.Errorf("got %v\nwant %v", actual.Body, expectedBody)
+	}
+}
+
+func TestMakeResponseErr(t *testing.T) {
+
+	body := "body"
+	err := errors.New("error")
+	actual := makeResponse(body, err)
+	expected := 504
+	if actual.StatusCode != expected {
+		t.Errorf("got %v\nwant %v", actual.StatusCode, expected)
 	}
 }
