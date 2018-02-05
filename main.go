@@ -101,7 +101,8 @@ func main() {
 }
 
 type config struct {
-	IftttKey string
+	IftttKey   string
+	IftttEvent string
 }
 
 func loadConfig() config {
