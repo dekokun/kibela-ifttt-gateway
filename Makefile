@@ -8,6 +8,7 @@ MOCK_IFTTT := mock_ifttt_test.go
 DEP := .bin/dep
 GOBUMP := .bin/gobump
 MOCKGEN := .bin/mockgen
+SAMLOCAL := .bin/aws-sam-local
 
 .PHONY: deploy
 deploy: $(OUTPUT_TEMPLATE)
@@ -33,7 +34,8 @@ setup-go:
 		github.com/golang/dep/cmd/dep \
 		github.com/golang/mock/gomock \
 		github.com/golang/mock/mockgen \
-		github.com/motemen/gobump/cmd/gobump
+		github.com/motemen/gobump/cmd/gobump \
+		github.com/awslabs/aws-sam-local
 
 .bin/%: Makefile
 	@$(MAKE) setup-go
@@ -47,8 +49,11 @@ install: $(DEP)
 	$(DEP) ensure
 
 .PHONY: test
-test: $(MOCK_IFTTT) config.toml
+test: $(MOCK_IFTTT) config.toml $(SAMLOCAL)
 	go test -v -covermode=count -coverprofile=coverage.out
+
+coverage.html: test
+	go tool cover -html=coverage.out -o $@
 
 config.toml:
 	cp -n config.toml.sample config.toml
