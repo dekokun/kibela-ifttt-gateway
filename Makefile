@@ -11,13 +11,13 @@ MOCKGEN := .bin/mockgen
 SAMLOCAL := .bin/aws-sam-local
 
 .PHONY: deploy
-deploy: $(OUTPUT_TEMPLATE)
+deploy: $(OUTPUT_TEMPLATE) $(VERSIONFILE)
 	aws cloudformation deploy \
 		--template-file $< \
 		--stack-name kibela-cloudformation \
 		--capabilities CAPABILITY_IAM
 
-$(BUILD): $(MAINFILE) Makefile $(VERSIONFILE) config.toml
+$(BUILD): $(MAINFILE) Makefile config.toml
 	GOARCH=amd64 GOOS=linux go build -o $@
 	cp config.toml build/config.toml
 
