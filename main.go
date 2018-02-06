@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/BurntSushi/toml"
 	"github.com/aws/aws-lambda-go/events"
@@ -97,6 +98,11 @@ func makeResponse(body string, err error) events.APIGatewayProxyResponse {
 }
 
 func main() {
+	if os.Getenv("AWS_SAM_LOCAL") != "" {
+		makeIftttClient = func(_ string) ifttt.IftttClient {
+			return &iftttmock{}
+		}
+	}
 	lambda.Start(handleRequest)
 }
 
