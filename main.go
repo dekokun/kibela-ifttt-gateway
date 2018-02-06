@@ -15,15 +15,23 @@ import (
 )
 
 var (
-	// ErrNameNotProvided is thrown when a name is not provided
-	ErrBodyNotProvided = errors.New("no data was provided in the HTTP body")
-	makeIftttClient    = ifttt.NewIftttClient
+	makeIftttClient = ifttt.NewIftttClient
 )
+
+func main() {
+	if os.Getenv("AWS_SAM_LOCAL") != "" {
+		// replace iftttclient to mock
+		makeIftttClient = func(_ string) ifttt.IftttClient {
+			return &iftttmock{}
+		}
+	}
+	lambda.Start(handleRequest)
+}
 
 func handleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	// If no data is provided in the HTTP request body, throw an error
 	if len(request.Body) < 1 {
-		return events.APIGatewayProxyResponse{}, ErrBodyNotProvided
+		return events.APIGatewayProxyResponse{}, errors.New("no data was provided in the HTTP body")
 	}
 	responseBody, err := handleRequestBody(request.Body)
 	return makeResponse(responseBody, err), err
@@ -95,15 +103,6 @@ func makeResponse(body string, err error) events.APIGatewayProxyResponse {
 		StatusCode: status,
 		Headers:    map[string]string{"version": version},
 	}
-}
-
-func main() {
-	if os.Getenv("AWS_SAM_LOCAL") != "" {
-		makeIftttClient = func(_ string) ifttt.IftttClient {
-			return &iftttmock{}
-		}
-	}
-	lambda.Start(handleRequest)
 }
 
 type config struct {
