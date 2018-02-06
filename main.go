@@ -9,7 +9,7 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	dproxy "github.com/koron/go-dproxy"
+	"github.com/koron/go-dproxy"
 	"github.com/lorenzobenvenuti/ifttt"
 )
 
