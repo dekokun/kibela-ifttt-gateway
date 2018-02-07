@@ -11,8 +11,8 @@ MOCKGEN := .bin/mockgen
 SAMLOCAL := .bin/aws-sam-local
 
 .PHONY: deploy
-deploy: $(OUTPUT_TEMPLATE) $(VERSIONFILE)
-	aws cloudformation deploy \
+deploy: $(OUTPUT_TEMPLATE) $(VERSIONFILE) $(SAMLOCAL)
+	$(SAMLOCAL) deploy \
 		--template-file $< \
 		--stack-name kibela-cloudformation \
 		--capabilities CAPABILITY_IAM
@@ -21,8 +21,8 @@ $(BUILD): $(MAINFILE) Makefile config.toml
 	GOARCH=amd64 GOOS=linux go build -o $@
 	cp config.toml build/config.toml
 
-$(OUTPUT_TEMPLATE): $(INPUT_TEMPATE) $(BUILD)
-	aws cloudformation package \
+$(OUTPUT_TEMPLATE): $(INPUT_TEMPATE) $(BUILD) $(SAMLOCAL)
+	$(SAMLOCAL) package \
 		--template-file $< \
 		--s3-bucket dekokun-alexa-example \
 		--s3-prefix lambda-go \
