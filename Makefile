@@ -1,3 +1,6 @@
+CONFIG = config.mk
+include $(CONFIG)
+
 BUILD := build/lambda-go
 OUTPUT_TEMPLATE := output.yml
 INPUT_TEMPATE := template.yml
@@ -14,7 +17,7 @@ SAMLOCAL := .bin/aws-sam-local
 deploy: $(OUTPUT_TEMPLATE) $(SAMLOCAL) $(BUILD)
 	$(SAMLOCAL) deploy \
 		--template-file $< \
-		--stack-name kibela-cloudformation \
+		--stack-name $(CONFIG_CLOUDFORMATION_STACK_NAME) \
 		--capabilities CAPABILITY_IAM
 
 $(BUILD): $(MAINFILE) $(VERSIONFILE) Makefile config.toml
@@ -25,8 +28,8 @@ $(BUILD): $(MAINFILE) $(VERSIONFILE) Makefile config.toml
 $(OUTPUT_TEMPLATE): $(INPUT_TEMPATE) $(BUILD) $(SAMLOCAL)
 	$(SAMLOCAL) package \
 		--template-file $< \
-		--s3-bucket dekokun-alexa-example \
-		--s3-prefix lambda-go \
+		--s3-bucket $(CONFIG_CLOUDFORMATION_PACKAGE_S3_BUCKET_NAME) \
+		--s3-prefix $(CONFIG_CLOUDFORMATION_PACKAGE_S3_PREFIX) \
 		--output-template-file $@
 
 .PHONY: setup-go
@@ -37,6 +40,10 @@ setup-go:
 		github.com/golang/mock/mockgen \
 		github.com/motemen/gobump/cmd/gobump \
 		github.com/awslabs/aws-sam-local
+
+.PHONY: setup-s3
+setup-s3:
+	aws s3 mb s3://$(CONFIG_CLOUDFORMATION_PACKAGE_S3_BUCKET_NAME)
 
 .bin/%: Makefile
 	@$(MAKE) setup-go
@@ -67,6 +74,7 @@ $(MOCK_IFTTT): $(MOCKGEN) vendor/github.com/lorenzobenvenuti/ifttt/ifttt.go
 start_server: $(BUILD) $(SAMLOCAL)
 	$(SAMLOCAL) local start-api
 
+# not work
 .PHONY: integration_test
 integration_test:
 	$(MAKE) start_server &
