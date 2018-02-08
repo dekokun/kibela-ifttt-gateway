@@ -36,7 +36,7 @@ If you already have the bucket, please skip this step.
 $ make setup-s3
 ```
 
-4. deploy
+4. deploy with AWS CloudFormation
 
 ```bash
 $ make deploy
