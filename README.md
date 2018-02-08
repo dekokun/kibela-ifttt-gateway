@@ -17,7 +17,7 @@ kibela - ifttt webhook via AWS AMazon api gateway
 
 1. Clone the repository
 
-```
+```bash
 $ git clone https://github.com/dekokun/kibela-ifttt-gateway.git
 ```
 
