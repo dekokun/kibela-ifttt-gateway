@@ -63,7 +63,7 @@ config.toml:
 $(MOCK_IFTTT): $(MOCKGEN) vendor/github.com/lorenzobenvenuti/ifttt/ifttt.go
 	$(MOCKGEN) -package main -source vendor/github.com/lorenzobenvenuti/ifttt/ifttt.go > $@
 
-.PHONY: start_server
+.PHONY: start_local_server
 start_server: $(BUILD) $(SAMLOCAL)
 	$(SAMLOCAL) local start-api
 
