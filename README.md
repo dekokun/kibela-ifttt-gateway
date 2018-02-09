@@ -36,6 +36,14 @@ If you already have the bucket, please skip this step.
 $ make setup-s3
 ```
 
+3. Change IFTTT Setting
+
+
+```bash
+$ cp hogehogefugafuga
+$ vi config.toml
+```
+
 4. deploy with AWS CloudFormation
 
 ```bash

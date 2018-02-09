@@ -1,1 +1,2 @@
-IftttKey = "Please input ifttt key"
+IftttKey = "Please Input IFTTT Key"
+IftttEvent = "Please Input IFTTT Event Name"
