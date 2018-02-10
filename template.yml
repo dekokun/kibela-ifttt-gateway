@@ -12,5 +12,5 @@ Resources:
         KibelaWebHook:
           Type: Api
           Properties:
-            Path: /payload
+            Path: /
             Method: post
